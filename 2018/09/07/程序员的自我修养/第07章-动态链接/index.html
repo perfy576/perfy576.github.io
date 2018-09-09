@@ -15,17 +15,20 @@
 
 
 
-<meta name="description" content="语法或是配置">
+<meta name="description" content="程序员的自我修养——链接、装载与库：第07章 动态链接 。">
+<meta name="keywords" content="书,编译">
 <meta property="og:type" content="article">
-<meta property="og:title" content="yelee 使用手册">
-<meta property="og:url" content="http://yoursite.com/2018/08/28/hello-world/index.html">
+<meta property="og:title" content="第07章 动态链接">
+<meta property="og:url" content="http://yoursite.com/2018/09/07/程序员的自我修养/第07章-动态链接/index.html">
 <meta property="og:site_name" content="perfy576">
-<meta property="og:description" content="语法或是配置">
+<meta property="og:description" content="程序员的自我修养——链接、装载与库：第07章 动态链接 。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-28T06:57:45.000Z">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/180909/af92Gh7F83.png">
+<meta property="og:updated_time" content="2018-09-09T08:01:48.783Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="yelee 使用手册">
-<meta name="twitter:description" content="语法或是配置">
+<meta name="twitter:title" content="第07章 动态链接">
+<meta name="twitter:description" content="程序员的自我修养——链接、装载与库：第07章 动态链接 。">
+<meta name="twitter:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/180909/af92Gh7F83.png">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -55,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>yelee 使用手册 | perfy576</title>
+<title>第07章 动态链接 | perfy576</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -192,11 +195,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-程序员的自我修养/第07章-动态链接" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2018/08/28/hello-world/" class="article-date">
-      <time datetime="2018-08-27T16:00:00.000Z" itemprop="datePublished">2018-08-28</time>
+      <a href="/2018/09/07/程序员的自我修养/第07章-动态链接/" class="article-date">
+      <time datetime="2018-09-07T08:11:00.000Z" itemprop="datePublished">2018-09-07</time>
 </a>
 
 
@@ -211,7 +214,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      yelee 使用手册
+      第07章 动态链接
     </h1>
   
 
@@ -219,8 +222,16 @@
       
       <div class="article-info article-info-post">
         
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/程序员的自我修养/">程序员的自我修养</a>
+    </div>
+
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/书/">书</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编译/">编译</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -229,9 +240,26 @@
       
           
         <blockquote>
-<p>语法或是配置<br><a id="more"></a> </p>
+<p>程序员的自我修养——链接、装载与库：第07章 动态链接 。</p>
+<a id="more"></a> 
 </blockquote>
-<h1 id="摘要格式"><a href="#摘要格式" class="headerlink" title="摘要格式"></a>摘要格式</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">title: Hello World</span><br><span class="line">date: 2015-12-03 00:00:00</span><br><span class="line">---</span><br><span class="line">摘要部分</span><br><span class="line">+&lt;!-- more --&gt;</span><br><span class="line">剩下文章</span><br></pre></td></tr></table></figure>
+<p>静态链接存在浪费内存、磁盘空间、模块更新困难的问题。</p>
+<p>为了解决空间浪费和更新困难的问题最简单的方法是将程序模块相互分割，形成独立的文件，在链接阶段不将它们放入可执行文件，而是在运行的时候动态的链接。</p>
+<p>把链接过程推迟到运行时在进行，就是动态链接的基本思想</p>
+<h1 id="动态链接"><a href="#动态链接" class="headerlink" title="动态链接"></a>动态链接</h1><p>linux系统中，ELF动态链接文件被称为动态共享对象（Dynamic Shared Objects），简称共享对象。以<code>.so</code>为扩展名。linux中，常用的c语言运行库glibc，他就是以动态链接的形式保存在<code>/lib</code>目录下。整个系统和内存只保存一份。</p>
+<p>例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* main.c*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"func.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    func();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* func.h */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* func.c */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"func.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"func\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 编译共享库</span><br><span class="line">gcc -shared -fPIC func.c -o func.so</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 编译链接程序</span><br><span class="line">gcc main.c func.so</span><br></pre></td></tr></table></figure>
+<p>然后运行<code>./a.out</code>，会提示共享库未找到。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./a.out: error while loading shared libraries: func.so: cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure>
+<p><code>ldd</code>查看<code>a.out</code>运行需要的动态加载的库：</p>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/blog/180909/af92Gh7F83.png" alt="ldd"></p>
+<p>没有找到<code>func.so</code>的路径，因此，可以临时添加共享库的搜索目录：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 我 func.so 所在的目录是 ~/code/demo</span><br><span class="line">export LD_LIBRARY_PATH=~/code/demo:$LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure>
+<p>注意<code>:</code>前后没有空格。</p>
+<p>在运行，就可以了。</p>
+
       
     </div>
     
@@ -243,11 +271,17 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2018/09/07/程序员的自我修养/第02章 编译和链接/">
-                    第02章 编译和链接
+                <a href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/">
+                    第06章 可执行文件的装载与进程
                 </a>
             </div>
         
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/09/07/程序员的自我修养/第03章 目标文件与elf/">
+                    第03章 目标文件与ELF
+                </a>
+            </div>
         
     </nav>
 
@@ -257,7 +291,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#摘要格式"><span class="toc-number">1.</span> <span class="toc-text">摘要格式</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#动态链接"><span class="toc-number">1.</span> <span class="toc-text">动态链接</span></a></li></ol>
         
     </div>
     <style>
@@ -288,7 +322,7 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2018/09/07/程序员的自我修养/第02章 编译和链接/" title="上一篇: 第02章 编译和链接">
+            <a href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/" title="上一篇: 第06章 可执行文件的装载与进程">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -296,7 +330,9 @@
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+            <a href="/2018/09/07/程序员的自我修养/第03章 目标文件与elf/" title="下一篇: 第03章 目标文件与ELF">
+                <i class="fa fa-angle-right"></i>
+            </a>
         
     </div>
 

@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="perfy576" />
+
+
+
+<meta name="description" content="程序员的自我修养——链接、装载与库：第03章 目标文件ELF。 主要对目标文件与ELF格式文件内容和格式有一个了解。">
+<meta name="keywords" content="书,编译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第03章 目标文件与ELF">
+<meta property="og:url" content="http://yoursite.com/2018/09/07/程序员的自我修养/第03章 目标文件与elf/index.html">
+<meta property="og:site_name" content="perfy576">
+<meta property="og:description" content="程序员的自我修养——链接、装载与库：第03章 目标文件ELF。 主要对目标文件与ELF格式文件内容和格式有一个了解。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/102142367.png">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/103756012.png">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/112816912.png">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/105019274.png">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/104143267.png">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/150804996.png">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/152941013.png">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/160157693.png">
+<meta property="og:updated_time" content="2018-09-08T14:14:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第03章 目标文件与ELF">
+<meta name="twitter:description" content="程序员的自我修养——链接、装载与库：第03章 目标文件ELF。 主要对目标文件与ELF格式文件内容和格式有一个了解。">
+<meta name="twitter:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/102142367.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="perfy576" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>第03章 目标文件与ELF | perfy576</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: ,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?b3eb7b0e33b83afa392e067dc9227436";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+             <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">perfy576</a></h1>
+        </hgroup>
+
+        
+
+        <!-- 
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+         -->
+
+
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">perfy576</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">perfy576</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-程序员的自我修养/第03章 目标文件与elf" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/09/07/程序员的自我修养/第03章 目标文件与elf/" class="article-date">
+      <time datetime="2018-09-07T02:05:00.000Z" itemprop="datePublished">2018-09-07</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      第03章 目标文件与ELF
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/程序员的自我修养/">程序员的自我修养</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/书/">书</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编译/">编译</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
+<p>程序员的自我修养——链接、装载与库：第03章 目标文件ELF。</p>
+<p>主要对目标文件与ELF格式文件内容和格式有一个了解。</p>
+<a id="more"></a> 
+</blockquote>
+<p>编译器编译源码后，但是未进行链接的那些中间文件。</p>
+<h1 id="目标文件ELF"><a href="#目标文件ELF" class="headerlink" title="目标文件ELF"></a>目标文件ELF</h1><h2 id="目标文件分类"><a href="#目标文件分类" class="headerlink" title="目标文件分类"></a>目标文件分类</h2><p>pc平台上的可执行文件主要有：</p>
+<ul>
+<li>windows下的PE</li>
+<li>linux下的ELF</li>
+</ul>
+<p>两者都是COFF（commeon file excutable）格式的变种。</p>
+<p>linux下，采用ELF格式的文件主要有：</p>
+<table>
+<thead>
+<tr>
+<th>ELF文件类型</th>
+<th>说明</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可重定位文件</td>
+<td>文件包含了代码和数据，可以用来连接成可执行文件或是共享目标文件，静态链接库也是这一类</td>
+<td>.o文件</td>
+</tr>
+<tr>
+<td>可执行文件</td>
+<td>这类文件式可以直接裕兴的程序，一般没有扩展名，权限是可执行，默认编译生成a.out</td>
+<td>a.out</td>
+</tr>
+<tr>
+<td>共享目标文件</td>
+<td>这类文件包含了代码和数据，可以供连机器使用产生可执行文件；还可以在运行时加入到进程的内存空间动态链接。</td>
+<td>各种.so</td>
+</tr>
+<tr>
+<td>核心转储文件</td>
+<td>进程意外终止时，系统将该进程的地址空间内容和终止时的其他信息转储到核心转储文件中</td>
+<td>core dump</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/102142367.png" alt="三种ELF文件"></p>
+<p><code>a.out</code>是可执行文件，但是被标记为共享目标文件。（是windows 的linux 子系统的问题？）</p>
+<h2 id="ELF文件内容"><a href="#ELF文件内容" class="headerlink" title="ELF文件内容"></a>ELF文件内容</h2><h3 id="节和段"><a href="#节和段" class="headerlink" title="节和段"></a>节和段</h3><p>ELF文件中有数据和机器指令代码，另外还包括一些链接时（包括动态链接和静态链接）需要的一些信息：符号表、调试信息、字符串等。这些信息按照不同的属性进行归类，每一类放在一个“节”中，也成为段。节和段都表示一个长度区域。</p>
+<p>程序源代码通常放在代码段中<code>.text</code>，全局变量和局部静态变量放在数据段中<code>.data</code>，只声明未初始化的全局变量和局部静态变量保存在<code>bss</code>段中。</p>
+<h3 id="段表"><a href="#段表" class="headerlink" title="段表"></a>段表</h3><p>每一个段都有段的属性，地址，偏移。因为每个段都有不同的长度、起始地址，为了定位一个段，因此有一个总的表记录了所有段的信息，称之为段表。</p>
+<p>段表实际上是一个描述文件中各个段的数组，段表记录了每个段在文件中的位置、长度、属性。从段表里面可以得到每一个段的信息。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">readelf -e a.out</span><br><span class="line"><span class="meta">#</span> 使用 readelf -a 查看全部的elf信息</span><br><span class="line">objdump -h a.out</span><br></pre></td></tr></table></figure>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/103756012.png" alt="readelf段表"></p>
+<p><code>objdump</code>查看的段表：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">objdump a.out -h |grep -E "Idx|data|text|bss" -A 1|grep -E ".interp|-" -v</span><br><span class="line"><span class="meta">#</span> -A 1 表示匹配后，输出改行和下一行，-v表示翻转，-E表示正则</span><br></pre></td></tr></table></figure>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/112816912.png" alt="objdump部分段表"></p>
+<p>段表是一个数组，每个元素都是<code>Elf32_Shdr</code>类型</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="comment">// 段的名字是个字符串统一存放在一个数组中，该值表示下表</span></span><br><span class="line">  Elf32_Word    sh_name;                <span class="comment">/* Section name (string tbl index) */</span></span><br><span class="line">  <span class="comment">// 段的类型：数据段，代码段，符号表等等，很多</span></span><br><span class="line">  Elf32_Word    sh_type;                <span class="comment">/* Section type */</span></span><br><span class="line">  <span class="comment">// 该段所在的内存空间是否可读、写、执行</span></span><br><span class="line">  Elf32_Word    sh_flags;               <span class="comment">/* Section flags */</span></span><br><span class="line">  Elf32_Addr    sh_addr;                <span class="comment">/* Section virtual addr at execution */</span></span><br><span class="line">  Elf32_Off     sh_offset;              <span class="comment">/* Section file offset */</span></span><br><span class="line">  Elf32_Word    sh_size;                <span class="comment">/* Section size in bytes */</span></span><br><span class="line">  <span class="comment">// 段的链接信息</span></span><br><span class="line">  Elf32_Word    sh_link;                <span class="comment">/* Link to another section */</span></span><br><span class="line">  Elf32_Word    sh_info;                <span class="comment">/* Additional section information */</span></span><br><span class="line">  <span class="comment">// 段对其信息</span></span><br><span class="line">  Elf32_Word    sh_addralign;           <span class="comment">/* Section alignment */</span></span><br><span class="line">  Elf32_Word    sh_entsize;             <span class="comment">/* Entry size if section holds table */</span></span><br><span class="line">&#125; Elf32_Shdr;</span><br></pre></td></tr></table></figure>
+<h3 id="文件头"><a href="#文件头" class="headerlink" title="文件头"></a>文件头</h3><p>ELF文件最前段的是ELF文件头，描述了整个文件的基本信息：ELF版本，目标机器型号，程序入口地址等。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexdump -e '16/1 "%02X " "  |  "' -e '16/1 "%_p" "\n"' -n 16 ./a.out</span><br><span class="line"><span class="meta">#</span> 中间的一大坨是一个高级的用法，能够单字节的显示，并且显示对应的ASCII </span><br><span class="line"><span class="meta">#</span> -n 16 表示 只显示16个字符</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/105019274.png" alt="hexdump"></p>
+<p>查看elf文件头信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readelf -e ./a.out</span><br></pre></td></tr></table></figure>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/104143267.png" alt="elf文件头"></p>
+<p>从上到下分别为：</p>
+<ul>
+<li>Magic：ELF魔数，总的信息</li>
+<li>Class：文件编译的字节长度，例如gcc加上<code>-m32</code>编译为32为程序</li>
+<li>Data：数据存储方式，大小端</li>
+<li>Version：版本</li>
+<li>OS/ABI：运行平台</li>
+<li>ABI Version：ABI版本</li>
+<li>Type：ELF重定向位类型：</li>
+<li>Machine：硬件平台</li>
+<li>Entry point address：入口地址</li>
+<li>Start of program headers：程序入口地址</li>
+<li>Start of section headers：程序长度</li>
+</ul>
+<p>以及和段表，段相关的信息。</p>
+<p>上面字段对应于<code>/usr/include/elf.h</code>中<code>Elf32_Ehdr</code>结构体：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="comment">// 位数和大小端存在这里</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span> e_ident[EI_NIDENT];     <span class="comment">/* Magic number and other info */</span></span><br><span class="line">  <span class="comment">// 段类型，重定向、可执行、共享</span></span><br><span class="line">  Elf32_Half    e_type;                 <span class="comment">/* Object file type */</span></span><br><span class="line">  Elf32_Half    e_machine;              <span class="comment">/* Architecture */</span></span><br><span class="line">  Elf32_Word    e_version;              <span class="comment">/* Object file version */</span></span><br><span class="line">  <span class="comment">// 操作系统加载完改程序后从改地址开始执行指令。</span></span><br><span class="line">  Elf32_Addr    e_entry;                <span class="comment">/* Entry point virtual address */</span></span><br><span class="line">  Elf32_Off     e_phoff;                <span class="comment">/* Program header table file offset */</span></span><br><span class="line">  <span class="comment">// 段表在本文件中的偏移地址</span></span><br><span class="line">  Elf32_Off     e_shoff;                <span class="comment">/* Section header table file offset */</span></span><br><span class="line">  Elf32_Word    e_flags;                <span class="comment">/* Processor-specific flags */</span></span><br><span class="line">  Elf32_Half    e_ehsize;               <span class="comment">/* ELF header size in bytes */</span></span><br><span class="line">  Elf32_Half    e_phentsize;            <span class="comment">/* Program header table entry size */</span></span><br><span class="line">  Elf32_Half    e_phnum;                <span class="comment">/* Program header table entry count */</span></span><br><span class="line">  Elf32_Half    e_shentsize;            <span class="comment">/* Section header table entry size */</span></span><br><span class="line">  Elf32_Half    e_shnum;                <span class="comment">/* Section header table entry count */</span></span><br><span class="line">  <span class="comment">// 在字符串表在段表中的下表</span></span><br><span class="line">  Elf32_Half    e_shstrndx;             <span class="comment">/* Section header string table index */</span></span><br><span class="line">&#125; Elf32_Ehdr;</span><br></pre></td></tr></table></figure>
+<h2 id="段的类型"><a href="#段的类型" class="headerlink" title="段的类型"></a>段的类型</h2><h3 id="重定位表"><a href="#重定位表" class="headerlink" title="重定位表"></a>重定位表</h3><p>在段表中，段类型是<code>SHT_REL</code>,段名一般为<code>.rel.text</code>、<code>.rel.data</code>。</p>
+<p>链接器在处理目标文件时，需要对目标文件中的一些符号进行重定位，也就是代码段和数据段中对绝对地址的引用的位置。这些信息记录在重定位表中。</p>
+<h3 id="字符串表"><a href="#字符串表" class="headerlink" title="字符串表"></a>字符串表</h3><p>ELF文件中有很多字符串，例如段名、变量名。这些字符串长度不固定，因此统一写在一起使用偏移来引用。这张表就是字符串表。</p>
+<p>名字为<code>.shstrab</code></p>
+<h3 id="符号表"><a href="#符号表" class="headerlink" title="符号表"></a>符号表</h3><p>链接过程就是把多个不同的elf文件之间合并起来，并且确定目标文件之间对地址（函数和变量）的引用地址。</p>
+<p>在链接过程中，将函数和变量统称为符号，其名字称为符号名。</p>
+<p>每个目标文件都有一个符号表，里面记录了该目标文件中<strong>用到的</strong>和<strong>所具有</strong>的所有符号，每个符号对应一个只，称为符号值。</p>
+<ul>
+<li>定义在本文件中的全局符号，可以被其他文件引用；</li>
+<li>在本文件中引用的全局符号，却没有定义在本目标文件中，一般称为外部符号；</li>
+<li>段名，编译器生成，其值是该段的起始地址，<code>.text</code>等；</li>
+<li>局部符号，这类符号只在编译单元内部可见，它们对于链接器没有作用；</li>
+<li>行号信息，是目标文件指令与源代码中代码行的对应关系，可选。</li>
+</ul>
+<p>链接的郭晨只作用于全局符号之间的相关“粘合”。</p>
+<p>例如</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* main.c*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"hello world\n"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其编译后的符号表有：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nm </span><br><span class="line">readelf</span><br></pre></td></tr></table></figure>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/150804996.png" alt="nm符号表"></p>
+<p>符号表也是一个数组，每个元素都是<code>Elf32_Sym</code>类型的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="comment">// 符号名</span></span><br><span class="line">  Elf32_Word    st_name;                <span class="comment">/* Symbol name (string tbl index) */</span></span><br><span class="line">  <span class="comment">// 可能是一个绝对值，也可能是一个地址</span></span><br><span class="line">  Elf32_Addr    st_value;               <span class="comment">/* Symbol value */</span></span><br><span class="line">  <span class="comment">// 所占字节</span></span><br><span class="line">  Elf32_Word    st_size;                <span class="comment">/* Symbol size */</span></span><br><span class="line">  <span class="comment">// 绑定信息：全局符号、局部符号、弱引用</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span> st_info;                <span class="comment">/* Symbol type and binding */</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span> st_other;               <span class="comment">/* Symbol visibility */</span></span><br><span class="line">  <span class="comment">// 所在的段，额外的信息：COMMON块、在别的文件中定义、在本文件中</span></span><br><span class="line">  Elf32_Section st_shndx;               <span class="comment">/* Section index */</span></span><br><span class="line">&#125; Elf32_Sym;</span><br></pre></td></tr></table></figure>
+<p><code>readelf -s</code>能够显示更多的信息：</p>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/152941013.png" alt="readelf符号表"></p>
+<h3 id="特殊符号"><a href="#特殊符号" class="headerlink" title="特殊符号"></a>特殊符号</h3><p>很多的符号并不是代码中定义的，但是可以直接声明并应用，这些符号供<code>ld</code>使用，称为特殊符号。</p>
+<ul>
+<li><code>_start</code>：程序入口地址；</li>
+<li><code>_end</code>：程序结束地址；</li>
+</ul>
+<p>等。</p>
+<h3 id="强弱符号"><a href="#强弱符号" class="headerlink" title="强弱符号"></a>强弱符号</h3><p>重复定义的情况。</p>
+<p>当多个目标文件中，含有相同名字的全局变量的定义时，那么在链接的过程中就会出现符号重复定义的错误。</p>
+<p>符号分为两类：</p>
+<ul>
+<li>强符号</li>
+<li>弱符号</li>
+</ul>
+<p>C/C++中，编译器默认函数和初始化了的全局变量为强符号，未初始化的符号为弱符号。可以使用<code>__attribute__((weak))</code>前缀显示声明为弱符号。</p>
+<p>在链接过程中，规则为：</p>
+<ul>
+<li>不允许强符号重复定义，存在就报错</li>
+<li>存在多个弱符号，一个强符号的情况下，选择强符号</li>
+<li>都是弱符号，选择占用空间最大的那个弱符号</li>
+</ul>
+<h3 id="COMMON块"><a href="#COMMON块" class="headerlink" title="COMMON块"></a>COMMON块</h3><p>当都是弱符号的时候，选择占用空间最大的那个。COMMON块就是针对这种情况的处理方法。</p>
+<p>因为链接器不能识别类型，只能识别大小，因此只能使用占用空间最大的那个符号链接。</p>
+<p>这里有一个，就是未初始化的全局变量当做COMMON处理，而不是放入<code>.bss</code>，是因为<code>.bss</code>中的符号所占空间是已知的，而未初始化的全局变量是一个弱符号，无法确定大小，所以要当做COMMON处理</p>
+<h3 id="强弱引用"><a href="#强弱引用" class="headerlink" title="强弱引用"></a>强弱引用</h3><p>在链接阶段需要对引用的符号进行决议，就是上面的强弱符号，当没有改符号的定义时，编译器就报错未定义，这成为引用。不报错那么称为弱引用。此时链接器将其值设置为0。使用<code>__attribute__((weakref))</code>前缀显示声明为弱引用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">__attribute__ ((weakref)) <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(func)</span><br><span class="line">  &#123;</span><br><span class="line">    fun();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种强弱引用对于库十分有用，比如库中的弱符号可以被用户强符号覆盖，从而使用呢自定义的库函数。</p>
+<h3 id="调试信息段"><a href="#调试信息段" class="headerlink" title="调试信息段"></a>调试信息段</h3><p>当在编译的时候加上<code>-g</code>就会生成额外的段</p>
+<h3 id="去符号表"><a href="#去符号表" class="headerlink" title="去符号表"></a>去符号表</h3><p>去掉可执行文件的符号表，主要用于减少文件的体积，此时也就不能调试了。</p>
+<p>使用<code>strip</code>命令。</p>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/160157693.png" alt="strip"></p>
+<p>可以看到体积减少了将近一半，同事也没有符号表了。当然因为程序小，符号表占比相对较大。印象中，使用了标准库的时候，使用该命令也能显著减少文件体积。</p>
+<h2 id="符号修饰"><a href="#符号修饰" class="headerlink" title="符号修饰"></a>符号修饰</h2><p>函数签名：包含一个函数的函数名、参数类型、所在的类、命名空间、权限等信息。</p>
+<p>函数签名主要用于识别不同的函数，编译器在处理符号的时候，使用名称修饰的方法，使每个函数签名对应一个修饰后的名称。</p>
+<h3 id="extern-“C”"><a href="#extern-“C”" class="headerlink" title="extern “C”"></a>extern “C”</h3><p>C++将在<code>extern &quot;C&quot;</code>的大括号内部的代码当做C语言代码处理，此时C++的修饰方式就不会起作用，而是采用c的修饰方式。这样在连接的时候以c修饰方式修饰得到的符号名去链接。</p>
+<p>换句话说，使用<code>extern &quot;C&quot;</code>包裹的代码，其库是也是c修饰方式修饰的。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2018/09/07/程序员的自我修养/第07章-动态链接/">
+                    第07章 动态链接
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/09/07/程序员的自我修养/第02章 编译和链接/">
+                    第02章 编译和链接
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#目标文件ELF"><span class="toc-number">1.</span> <span class="toc-text">目标文件ELF</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#目标文件分类"><span class="toc-number">1.1.</span> <span class="toc-text">目标文件分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ELF文件内容"><span class="toc-number">1.2.</span> <span class="toc-text">ELF文件内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#节和段"><span class="toc-number">1.2.1.</span> <span class="toc-text">节和段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#段表"><span class="toc-number">1.2.2.</span> <span class="toc-text">段表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文件头"><span class="toc-number">1.2.3.</span> <span class="toc-text">文件头</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#段的类型"><span class="toc-number">1.3.</span> <span class="toc-text">段的类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#重定位表"><span class="toc-number">1.3.1.</span> <span class="toc-text">重定位表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字符串表"><span class="toc-number">1.3.2.</span> <span class="toc-text">字符串表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#符号表"><span class="toc-number">1.3.3.</span> <span class="toc-text">符号表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特殊符号"><span class="toc-number">1.3.4.</span> <span class="toc-text">特殊符号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#强弱符号"><span class="toc-number">1.3.5.</span> <span class="toc-text">强弱符号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#COMMON块"><span class="toc-number">1.3.6.</span> <span class="toc-text">COMMON块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#强弱引用"><span class="toc-number">1.3.7.</span> <span class="toc-text">强弱引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调试信息段"><span class="toc-number">1.3.8.</span> <span class="toc-text">调试信息段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#去符号表"><span class="toc-number">1.3.9.</span> <span class="toc-text">去符号表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#符号修饰"><span class="toc-number">1.4.</span> <span class="toc-text">符号修饰</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#extern-“C”"><span class="toc-number">1.4.1.</span> <span class="toc-text">extern “C”</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+
+
+    
+
+
+<!-- 
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/09/07/程序员的自我修养/第07章-动态链接/" title="上一篇: 第07章 动态链接">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/09/07/程序员的自我修养/第02章 编译和链接/" title="下一篇: 第02章 编译和链接">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第04章 静态链接/">第04章 静态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/">第06章 可执行文件的装载与进程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第07章-动态链接/">第07章 动态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第03章 目标文件与elf/">第03章 目标文件与ELF</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第02章 编译和链接/">第02章 编译和链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/28/hello-world/">yelee 使用手册</a></li></ul>
+
+ -->
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2018 perfy576
+            </div>
+            <div class="footer-right">
+                <!-- <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i> -->
+            </div>
+        </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-124181440-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+             title: "a.article-title, .article-more-link a", 
+             post: ".article-entry a[href], .copyright a[href]", 
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

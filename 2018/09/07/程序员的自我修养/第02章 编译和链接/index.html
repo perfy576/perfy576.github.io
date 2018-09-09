@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="perfy576" />
+
+
+
+<meta name="description" content="程序员的自我修养——链接、装载与库：第二章 编译和链接。 主要对编译文件的过程有一个大概的了解。">
+<meta name="keywords" content="书,编译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第02章 编译和链接">
+<meta property="og:url" content="http://yoursite.com/2018/09/07/程序员的自我修养/第02章 编译和链接/index.html">
+<meta property="og:site_name" content="perfy576">
+<meta property="og:description" content="程序员的自我修养——链接、装载与库：第二章 编译和链接。 主要对编译文件的过程有一个大概的了解。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/091337917.png">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/091523594.png">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/092510923.png">
+<meta property="og:updated_time" content="2018-09-08T02:13:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第02章 编译和链接">
+<meta name="twitter:description" content="程序员的自我修养——链接、装载与库：第二章 编译和链接。 主要对编译文件的过程有一个大概的了解。">
+<meta name="twitter:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/091337917.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="perfy576" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>第02章 编译和链接 | perfy576</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: ,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?b3eb7b0e33b83afa392e067dc9227436";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+             <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">perfy576</a></h1>
+        </hgroup>
+
+        
+
+        <!-- 
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+         -->
+
+
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">perfy576</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">perfy576</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-程序员的自我修养/第02章 编译和链接" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/09/07/程序员的自我修养/第02章 编译和链接/" class="article-date">
+      <time datetime="2018-09-06T23:53:00.000Z" itemprop="datePublished">2018-09-07</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      第02章 编译和链接
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/程序员的自我修养/">程序员的自我修养</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/书/">书</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编译/">编译</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
+<p>程序员的自我修养——链接、装载与库：第二章 编译和链接。</p>
+<p>主要对编译文件的过程有一个大概的了解。</p>
+<a id="more"></a> 
+</blockquote>
+<h1 id="编译文件"><a href="#编译文件" class="headerlink" title="编译文件"></a>编译文件</h1><p>编译一个程序，例如<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* main.c*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"hello world\n"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>linux下编译命令为<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc main.c</span><br></pre></td></tr></table></figure></p>
+<p>默认生成<code>a.out</code>文件。<br>这个过程可以分解为四步：</p>
+<ol>
+<li>预处理（prepressing）</li>
+<li>编译（compilation）</li>
+<li>汇编（assembly）</li>
+<li>链接（linking）</li>
+</ol>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/091337917.png" alt="编译四步骤"></p>
+<h2 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -E main.c</span><br><span class="line"><span class="meta">#</span> 默认输出在终端，使用 -o main.i 输出到文件</span><br></pre></td></tr></table></figure>
+<p>预处理的过程主要是处理源代码文件中以<code>#</code>开头的预处理指令：<code>#define</code>，<code>#include</code>等：</p>
+<ul>
+<li>将所有的<code>#define</code> 删除，并在使用该宏的地方展开宏定义</li>
+<li>处理又有的条件预处理指令：<code>#if</code>，<code>#ifndef</code>，<code>#elif</code>，<code>#else</code>，<code>#endif</code>等；</li>
+<li>处理<code>#include</code>，讲被引入的文件直接在预处理指令的位置处展开，这个过程是递归的；</li>
+<li>删除所有注释;</li>
+<li>添加行号和文件名标识，用于编译时编译器产生调试用的行号信息和错误提示的时候显示行号；</li>
+<li>保留<code>#pragma</code>编译器指令，因为编译器需要使用他们。</li>
+</ul>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/091523594.png" alt="编译时产生行号信息"></p>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -S main.i</span><br></pre></td></tr></table></figure>
+<p>编译过程把与处理完的文件进行：词法分析，语法分析，语义分析，以及优化后产生相应的汇编代码文件，这个过程是整个程序构建的核心部分。</p>
+<p>现在版本的gcc把预处理和编译两个步骤合为一个步骤，使用<code>cc1</code>的程序完成该步骤，该程序位于<code>/usr/lib/gcc/x86_64-linux-gnu/版本号/</code>目录下。</p>
+<p>不同的语言在该步骤中调用的程序不同，比如：c++在该步骤中调用<code>cc1plus</code>。</p>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/092510923.png" alt="汇编代码main部分"></p>
+<p>编译过程可以分为六步：</p>
+<ol>
+<li>扫描，词法分析</li>
+<li>语法分许</li>
+<li>语义分析</li>
+<li>源代码优化</li>
+<li>代码生成</li>
+<li>目标代码优化</li>
+</ol>
+<p>没学过编译原理看的似懂非懂。</p>
+<h3 id="扫描"><a href="#扫描" class="headerlink" title="扫描"></a>扫描</h3><p>将源代码输入到扫描器，进行词法分析，将代码的 字符序列分割成为一些列的记号。例如，记号、括号、标识符等</p>
+<h3 id="语法分析"><a href="#语法分析" class="headerlink" title="语法分析"></a>语法分析</h3><p>语法分析器将扫描器产生的记号进行语法分析，生成语法树，也就是表达式。</p>
+<p>如果出现了表达式不合法，缺少括号或是语法错误之类的会在这个阶段报错。</p>
+<h3 id="语义分析"><a href="#语义分析" class="headerlink" title="语义分析"></a>语义分析</h3><p>编译器只能进行静态语义分析，动态语义分析只有在运行期才能确。</p>
+<p>静态语义包括生命和类型的匹配，类型转换。</p>
+<p>动态语义比如除0操作。</p>
+<p>经过语音分析阶段后，整个语法树的表达式就被标识了类型，如果需要做隐式转换，语音分析程序会在语法树中插入相应的转换节点。</p>
+<h3 id="源代码优化"><a href="#源代码优化" class="headerlink" title="源代码优化"></a>源代码优化</h3><p>现代编译器有很多层次的优化，源代码级别通常会有一个优化过程。</p>
+<p>例如:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i=<span class="number">1</span>+<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<p>这个过程中，源代码优化器会将语法优化为</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i=<span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="目标代码生成与优化"><a href="#目标代码生成与优化" class="headerlink" title="目标代码生成与优化"></a>目标代码生成与优化</h3><p>代码生成器将优化后的源代码转换为目标机器代码，这个过程依赖于目标机器，不同的机器有不同的字长、寄存器等。</p>
+<h2 id="汇编"><a href="#汇编" class="headerlink" title="汇编"></a>汇编</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -c main.s</span><br></pre></td></tr></table></figure>
+<p>汇编将汇编代码转换为机器可移植性的指令，汇编过程仅仅根据汇编指令和机器指令的对照表一一翻译即可。</p>
+<p>汇编器<code>as</code></p>
+<p>相关的几个概念：</p>
+<ul>
+<li>重定位：重新计算各个目标地址的过程。</li>
+<li>符号：表示一个地址，可以使子程序的起始地址也，可以是一个变量的起始地址。</li>
+</ul>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc main.o</span><br></pre></td></tr></table></figure>
+<p>链接器<code>ld</code></p>
+<p>后面会详细讲。</p>
+<p>实际上gcc这个命令只是将这些后台程序包装，根据不同的参数去调用不同的程序，例如，预处理器，汇编器，链接器。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2018/09/07/程序员的自我修养/第03章 目标文件与elf/">
+                    第03章 目标文件与ELF
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/08/28/hello-world/">
+                    yelee 使用手册
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#编译文件"><span class="toc-number">1.</span> <span class="toc-text">编译文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#预处理"><span class="toc-number">1.1.</span> <span class="toc-text">预处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译"><span class="toc-number">1.2.</span> <span class="toc-text">编译</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#扫描"><span class="toc-number">1.2.1.</span> <span class="toc-text">扫描</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#语法分析"><span class="toc-number">1.2.2.</span> <span class="toc-text">语法分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#语义分析"><span class="toc-number">1.2.3.</span> <span class="toc-text">语义分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#源代码优化"><span class="toc-number">1.2.4.</span> <span class="toc-text">源代码优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#目标代码生成与优化"><span class="toc-number">1.2.5.</span> <span class="toc-text">目标代码生成与优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#汇编"><span class="toc-number">1.3.</span> <span class="toc-text">汇编</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#链接"><span class="toc-number">1.4.</span> <span class="toc-text">链接</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+
+
+    
+
+
+<!-- 
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/09/07/程序员的自我修养/第03章 目标文件与elf/" title="上一篇: 第03章 目标文件与ELF">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/08/28/hello-world/" title="下一篇: yelee 使用手册">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第04章 静态链接/">第04章 静态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/">第06章 可执行文件的装载与进程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第07章-动态链接/">第07章 动态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第03章 目标文件与elf/">第03章 目标文件与ELF</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第02章 编译和链接/">第02章 编译和链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/28/hello-world/">yelee 使用手册</a></li></ul>
+
+ -->
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2018 perfy576
+            </div>
+            <div class="footer-right">
+                <!-- <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i> -->
+            </div>
+        </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-124181440-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+             title: "a.article-title, .article-more-link a", 
+             post: ".article-entry a[href], .copyright a[href]", 
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

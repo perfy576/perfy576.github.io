@@ -598,17 +598,6 @@ a {
   -webkit-animation-duration: 0.4s;
   -webkit-animation-delay: 0.3s;
 }
-#header .profilepic:hover {
-  background: #fff;
-  border: 5px solid #88acdb;
-  -webkit-box-shadow: 0 0 1.5em #88acdb;
-  box-shadow: 0 0 1.5em #88acdb;
-  -webkit-animation: profilepic 0.15s linear infinite alternate;
-  -moz-animation: profilepic 0.15s linear infinite alternate;
-  -ms-animation: profilepic 0.15s linear infinite alternate;
-  animation: profilepic 0.15s linear infinite alternate;
-  -webkit-animation: profilepic 0.15s linear infinite alternate;
-}
 @-moz-keyframes profilepic {
   0% {
     right: 4px;
@@ -2675,7 +2664,7 @@ pre .javascript .function {
   text-decoration: none;
   font-weight: normal;
   font-size: 0.75rem;
-  color: #fff;
+  color: #000;
   height: 1.125rem;
   line-height: 1.125rem;
   float: left;

@@ -15,17 +15,20 @@
 
 
 
-<meta name="description" content="语法或是配置">
+<meta name="description" content="程序员的自我修养——链接、装载与库：第06章 可执行文件的装载与进程 。">
+<meta name="keywords" content="书,编译">
 <meta property="og:type" content="article">
-<meta property="og:title" content="yelee 使用手册">
-<meta property="og:url" content="http://yoursite.com/2018/08/28/hello-world/index.html">
+<meta property="og:title" content="第06章 可执行文件的装载与进程">
+<meta property="og:url" content="http://yoursite.com/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/index.html">
 <meta property="og:site_name" content="perfy576">
-<meta property="og:description" content="语法或是配置">
+<meta property="og:description" content="程序员的自我修养——链接、装载与库：第06章 可执行文件的装载与进程 。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-28T06:57:45.000Z">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/180909/2CejHhIKFE.png">
+<meta property="og:updated_time" content="2018-09-09T07:25:08.653Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="yelee 使用手册">
-<meta name="twitter:description" content="语法或是配置">
+<meta name="twitter:title" content="第06章 可执行文件的装载与进程">
+<meta name="twitter:description" content="程序员的自我修养——链接、装载与库：第06章 可执行文件的装载与进程 。">
+<meta name="twitter:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/180909/2CejHhIKFE.png">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -55,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>yelee 使用手册 | perfy576</title>
+<title>第06章 可执行文件的装载与进程 | perfy576</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -192,11 +195,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-程序员的自我修养/第06章 可执行文件的装载与进程" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2018/08/28/hello-world/" class="article-date">
-      <time datetime="2018-08-27T16:00:00.000Z" itemprop="datePublished">2018-08-28</time>
+      <a href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/" class="article-date">
+      <time datetime="2018-09-07T08:11:00.000Z" itemprop="datePublished">2018-09-07</time>
 </a>
 
 
@@ -211,7 +214,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      yelee 使用手册
+      第06章 可执行文件的装载与进程
     </h1>
   
 
@@ -219,8 +222,16 @@
       
       <div class="article-info article-info-post">
         
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/程序员的自我修养/">程序员的自我修养</a>
+    </div>
+
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/书/">书</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编译/">编译</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -229,9 +240,39 @@
       
           
         <blockquote>
-<p>语法或是配置<br><a id="more"></a> </p>
+<p>程序员的自我修养——链接、装载与库：第06章 可执行文件的装载与进程 。</p>
+<a id="more"></a> 
 </blockquote>
-<h1 id="摘要格式"><a href="#摘要格式" class="headerlink" title="摘要格式"></a>摘要格式</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">title: Hello World</span><br><span class="line">date: 2015-12-03 00:00:00</span><br><span class="line">---</span><br><span class="line">摘要部分</span><br><span class="line">+&lt;!-- more --&gt;</span><br><span class="line">剩下文章</span><br></pre></td></tr></table></figure>
+<h1 id="装载"><a href="#装载" class="headerlink" title="装载"></a>装载</h1><h2 id="进程虚拟地址空间"><a href="#进程虚拟地址空间" class="headerlink" title="进程虚拟地址空间"></a>进程虚拟地址空间</h2><p>程序是一个静态的概念，是预先编译好的指令和数据集合的一个文件</p>
+<p>进程是一个动态的概念，是程序运行时的一个过程。</p>
+<p>现代操作系统下，每个进程都拥有独立的虚拟地址空间。这个虚拟地址空间的大小有计算机的硬件平台决定，具体来说是cpu的位数。硬件决定了地址空间的最大理论上限，即硬件的寻址空间大小。但实际上不止有cpu决定，还由总线宽度决定。</p>
+<p>以32位操作系统为例，4G的进程虚拟地址空间，高1G是操作系统部分，低3G是用户进程空间。</p>
+<p>进程虚拟地址空间，主要是分页机制。</p>
+<h2 id="装载方式"><a href="#装载方式" class="headerlink" title="装载方式"></a>装载方式</h2><p>程序需要装载进内存才能运行。</p>
+<p>装载方式有：</p>
+<ul>
+<li>覆盖装入</li>
+<li>页映射</li>
+</ul>
+<h3 id="覆盖装入"><a href="#覆盖装入" class="headerlink" title="覆盖装入"></a>覆盖装入</h3><p>在没有分页机制之前使用比较广泛，目前几乎被淘汰。</p>
+<p>这种方式是程序员将代码分模块，并控制模块何时装载如内存。</p>
+<p>其装载的过程类似于深度优先搜索，按照函数的执行过程递归装入，回溯拆卸。</p>
+<h3 id="页映射"><a href="#页映射" class="headerlink" title="页映射"></a>页映射</h3><p>分页机制再详解。</p>
+<h2 id="装载过程"><a href="#装载过程" class="headerlink" title="装载过程"></a>装载过程</h2><p>创建一个进程，然后装载相应的可执行文件并执行，主要分为：</p>
+<ol>
+<li>创建一个独立的虚拟地址空间</li>
+<li>读取可执行文件头，并且建立虚拟空间与可执行文件的映射关系</li>
+<li>将cpu的指令寄存器设置为可执行文件的入口地址，并执行。</li>
+</ol>
+<p>在装载的时候，操作系统只关心和装载相关的问题，最主要的是段的权限。操作系统姜相同权限的段合并在一起，进行映射（放入页中）。这样的好处是可以减少页内部碎片，从而节省了内存空间。</p>
+<p>ELF文件引入了“Segment”的概念（之前的段是Section），一个Segment可以包含一个或是多个段。Segment从装载的角度重新划分了ELF的各个段。链接器会尽量把相同权限的段分配在同一Segment中。所以操作系统最终将文件加载到内存的时候是按照Segment与页对应的关系进行装载。</p>
+<p>使用<code>readelf -l</code>查看Segment：</p>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/blog/180909/2CejHhIKFE.png" alt="![mark](http://p8jp6dz6t.bkt.clouddn.com/blog/180909/2CejHhIKFE.png)"></p>
+<p>LOAD类型的是需要被加载到内存中的。</p>
+<p>它对应于：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">// 属性</span></span><br><span class="line">    Elf32_Word    p_type;                 <span class="comment">/* Segment type */</span></span><br><span class="line">    Elf32_Off     p_offset;               <span class="comment">/* Segment file offset */</span></span><br><span class="line">    Elf32_Addr    p_vaddr;                <span class="comment">/* Segment virtual address */</span></span><br><span class="line">    Elf32_Addr    p_paddr;                <span class="comment">/* Segment physical address */</span></span><br><span class="line">    <span class="comment">// 在文件中的所占大小</span></span><br><span class="line">    Elf32_Word    p_filesz;               <span class="comment">/* Segment size in file */</span></span><br><span class="line">    <span class="comment">// 加载到内存中所占大小</span></span><br><span class="line">    Elf32_Word    p_memsz;                <span class="comment">/* Segment size in memory */</span></span><br><span class="line">    <span class="comment">// 权限</span></span><br><span class="line">    Elf32_Word    p_flags;                <span class="comment">/* Segment flags */</span></span><br><span class="line">    <span class="comment">// 对齐</span></span><br><span class="line">    Elf32_Word    p_align;                <span class="comment">/* Segment alignment */</span></span><br><span class="line">&#125; Elf32_Phdr;</span><br></pre></td></tr></table></figure>
+<p><code>p_filesz</code>和<code>p_memsz</code>让<code>.bss</code>段不必再文件中分配空间，而可以设置这两个字段达到节省磁盘的目的。</p>
+
       
     </div>
     
@@ -243,11 +284,17 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2018/09/07/程序员的自我修养/第02章 编译和链接/">
-                    第02章 编译和链接
+                <a href="/2018/09/07/程序员的自我修养/第04章 静态链接/">
+                    第04章 静态链接
                 </a>
             </div>
         
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/09/07/程序员的自我修养/第07章-动态链接/">
+                    第07章 动态链接
+                </a>
+            </div>
         
     </nav>
 
@@ -257,7 +304,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#摘要格式"><span class="toc-number">1.</span> <span class="toc-text">摘要格式</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#装载"><span class="toc-number">1.</span> <span class="toc-text">装载</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#进程虚拟地址空间"><span class="toc-number">1.1.</span> <span class="toc-text">进程虚拟地址空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#装载方式"><span class="toc-number">1.2.</span> <span class="toc-text">装载方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#覆盖装入"><span class="toc-number">1.2.1.</span> <span class="toc-text">覆盖装入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#页映射"><span class="toc-number">1.2.2.</span> <span class="toc-text">页映射</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#装载过程"><span class="toc-number">1.3.</span> <span class="toc-text">装载过程</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -288,7 +335,7 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2018/09/07/程序员的自我修养/第02章 编译和链接/" title="上一篇: 第02章 编译和链接">
+            <a href="/2018/09/07/程序员的自我修养/第04章 静态链接/" title="上一篇: 第04章 静态链接">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -296,7 +343,9 @@
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+            <a href="/2018/09/07/程序员的自我修养/第07章-动态链接/" title="下一篇: 第07章 动态链接">
+                <i class="fa fa-angle-right"></i>
+            </a>
         
     </div>
 
