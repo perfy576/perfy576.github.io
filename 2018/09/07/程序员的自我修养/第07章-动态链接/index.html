@@ -24,7 +24,7 @@
 <meta property="og:description" content="程序员的自我修养——链接、装载与库：第07章 动态链接 。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/180909/af92Gh7F83.png">
-<meta property="og:updated_time" content="2018-09-09T08:01:48.783Z">
+<meta property="og:updated_time" content="2018-09-09T11:55:37.809Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第07章 动态链接">
 <meta name="twitter:description" content="程序员的自我修养——链接、装载与库：第07章 动态链接 。">
@@ -246,7 +246,7 @@
 <p>静态链接存在浪费内存、磁盘空间、模块更新困难的问题。</p>
 <p>为了解决空间浪费和更新困难的问题最简单的方法是将程序模块相互分割，形成独立的文件，在链接阶段不将它们放入可执行文件，而是在运行的时候动态的链接。</p>
 <p>把链接过程推迟到运行时在进行，就是动态链接的基本思想</p>
-<h1 id="动态链接"><a href="#动态链接" class="headerlink" title="动态链接"></a>动态链接</h1><p>linux系统中，ELF动态链接文件被称为动态共享对象（Dynamic Shared Objects），简称共享对象。以<code>.so</code>为扩展名。linux中，常用的c语言运行库glibc，他就是以动态链接的形式保存在<code>/lib</code>目录下。整个系统和内存只保存一份。</p>
+<h1 id="动态链接"><a href="#动态链接" class="headerlink" title="动态链接"></a>动态链接</h1><h2 id="编译过程"><a href="#编译过程" class="headerlink" title="编译过程"></a>编译过程</h2><p>linux系统中，ELF动态链接文件被称为动态共享对象（Dynamic Shared Objects），简称共享对象。以<code>.so</code>为扩展名。linux中，常用的c语言运行库glibc，他就是以动态链接的形式保存在<code>/lib</code>目录下。整个系统和内存只保存一份。</p>
 <p>例子：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* main.c*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"func.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    func();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* func.h */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* func.c */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"func.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"func\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>编译：</p>
@@ -259,6 +259,36 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 我 func.so 所在的目录是 ~/code/demo</span><br><span class="line">export LD_LIBRARY_PATH=~/code/demo:$LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure>
 <p>注意<code>:</code>前后没有空格。</p>
 <p>在运行，就可以了。</p>
+<h2 id="地址无关代码"><a href="#地址无关代码" class="headerlink" title="地址无关代码"></a>地址无关代码</h2><p>为了实现动态链接，就要解决共享对象加载在不同程序中的内存地址的冲突问题。在动态链接的情况下，将不同的一个共享库加载到不同进程，相同的地址是不可行的。因此解决的方法是：允许共享库在任意地址加载，也就是共享对象在编译时不假设自己在进程虚拟地址空间中的位置。</p>
+<p>因此，共享库被加载到内存以后，需要对原先程序中指令和数据的绝对地址的引用重定位。同时共享库内自己对自己的绝对引用的地址也需要进行修改，这种重定位称为装载时重定位。</p>
+<p>装载是重定位解决动态模块中的有绝对地址引用的方法，但是指令部分无法再多个进程之间，因为共享库为了自己能够调用自己的函数，修改了地址。</p>
+<p>为了解决指令的多进程共享，因此将指令中需要修改的部分分离出来，跟数据放在一起，这样部分指令就可以保持不变，而数据可以在每个进程中都拥有一个副本，这种解决方案叫做地址无关代码。编译时的参数<code>-fPIC</code>就是产生地址无关代码的。同时还有<code>-fpic</code>（小写的），编译速度快，但是不同平台上有限制。</p>
+<p>如果不适用<code>-fPIC</code>那么仍然可以编译，但是会有限制，同时也不能在多进程之间共享代码。但是运行速度快，因为每次访问不需要去计算地址。</p>
+<p>地址重定位主要有：</p>
+<ul>
+<li><p>共享库内部的函数调用、跳转</p>
+<p>目前硬件都可以做到相对地址调用，因此这种指令不需要重定位。</p>
+</li>
+<li><p>共享库内部数据访问</p>
+<p>指令中补能包含数据的绝对地址，因此也是用相对地址。在内存中，共享库先是几页指令，然后紧跟着几页数据。所以指令和数据的地址也是固定的。从指令地址得到数据地址的方式有很多，可以先调用一个函数获得cs:ip寄存器，然后再偏移即可。</p>
+</li>
+<li><p>共享库间的数据访问</p>
+<p>ELF的做法是，在数据段建立指向所需变量的一个指针数组：全局偏移表（GOF），当代吗需要引用该变量时，可以通过GOT中相对应的项间接引用。也就是说当指令要访问变量的时候，程序先找到GOT，然后根据GOT中变量对应项去找变量的地址。而GOT中变量的地址是链接器在装载模块的时候回朝赵每个变量所在的地址，然后填充GOT，以确保每个指针指向的地址正确。</p>
+</li>
+<li><p>共享库间调用、跳转</p>
+<p>同上</p>
+</li>
+<li><p>共享库中的全局变量</p>
+<p>在编译共享库的时候，将全局变量按照跨共享库的变量来编译，也就是说通过GOT的方式。在装载的时候如果之前程序中已经有了，那么就使用之前的。如果本共享库中还有初始化了，那么就将该值复制到主程序中的值去。</p>
+</li>
+</ul>
+<p>当共享库定义了一个变量，多个进程是否都是操作同一变量？</p>
+<p>不是，数据段在每个进程中都有一个独立的副本。</p>
+<h2 id="延时绑定"><a href="#延时绑定" class="headerlink" title="延时绑定"></a>延时绑定</h2><p>动态链接性能比静态链接下降1%~5%。主要原因在于复杂的GOT定位、程序开始执行时的链接过程。</p>
+<p>程序开始执行前，动态链接会耗费不少时间用于解决模块之间函数引用的符号查找以及重定位。可能一个程序在程序执行完都不会被用到，因此一开始就把所有函数都链接号是一种浪费，因此ELF采用一种延迟绑定的方法，即在函数第一次被用到的时候才绑定。这加快了程序的启动速度。</p>
+<p>当调用某个动态库的函数时，原先的做法是通过GOT中相应的项进行跳转，PLT为了实现延时绑定，在这个过程中又增加了一层间接跳转。调用函数通过一个PTL结构进行跳转。每个外部函数在PTL中都有一个对应的项。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">000000000000072a &lt;main&gt;:</span><br><span class="line"> 72a:   55                      push   %rbp</span><br><span class="line"> 72b:   48 89 e5                mov    %rsp,%rbp</span><br><span class="line"> 72e:   b8 00 00 00 00          mov    $0x0,%eax</span><br><span class="line"> 733:   e8 c8 fe ff ff          callq  600 &lt;func@plt&gt;</span><br><span class="line"> 738:   b8 00 00 00 00          mov    $0x0,%eax</span><br><span class="line"> 73d:   5d                      pop    %rbp</span><br><span class="line"> 73e:   c3                      retq</span><br><span class="line"> 73f:   90                      nop</span><br><span class="line"> </span><br><span class="line"> ## 继续</span><br><span class="line"> 0000000000000600 &lt;func@plt&gt;:</span><br><span class="line"> 600:   ff 25 ca 09 20 00       jmpq   *0x2009ca(%rip)        # 200fd0 &lt;func&gt;</span><br><span class="line"> 606:   68 00 00 00 00          pushq  $0x0</span><br><span class="line"> 60b:   e9 e0 ff ff ff          jmpq   5f0 &lt;.plt&gt;</span><br><span class="line"> </span><br><span class="line"> ## 按书上的说法：</span><br><span class="line"> ## 第一个jmp最终跳到一个GOT表中，但是该表初始化的时候，表中值是下一指令的地址，就是pushq</span><br><span class="line"> ## 然后 pushq 是0x0 是func 在 .rel.plt 的下标</span><br><span class="line"> ## 继续</span><br><span class="line"> 00000000000005f0 &lt;.plt&gt;:</span><br><span class="line"> 5f0:   ff 35 ca 09 20 00       pushq  0x2009ca(%rip)        # 200fc0 &lt;_GLOBAL_OFFSET_TABLE_+0x8&gt;</span><br><span class="line"> 5f6:   ff 25 cc 09 20 00       jmpq   *0x2009cc(%rip)        # 200fc8 &lt;_GLOBAL_OFFSET_TABLE_+0x10&gt;</span><br><span class="line"> 5fc:   0f 1f 40 00             nopl   0x0(%rax)</span><br><span class="line"> </span><br><span class="line">## 然后整个表，就是说现在在编译的时候已经构造了整个表了</span><br></pre></td></tr></table></figure>
+<p>看的似懂非懂，原理就是<code>jmp</code>预先的地址是下一条指令，后面会被修改。</p>
 
       
     </div>
@@ -271,15 +301,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/">
-                    第06章 可执行文件的装载与进程
+                <a href="/2018/09/07/程序员的自我修养/第04章 静态链接/">
+                    第04章 静态链接
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2018/09/07/程序员的自我修养/第03章 目标文件与elf/">
-                    第03章 目标文件与ELF
+                <a href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/">
+                    第06章 可执行文件的装载与进程
                 </a>
             </div>
         
@@ -291,7 +321,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#动态链接"><span class="toc-number">1.</span> <span class="toc-text">动态链接</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#动态链接"><span class="toc-number">1.</span> <span class="toc-text">动态链接</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#编译过程"><span class="toc-number">1.1.</span> <span class="toc-text">编译过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#地址无关代码"><span class="toc-number">1.2.</span> <span class="toc-text">地址无关代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#延时绑定"><span class="toc-number">1.3.</span> <span class="toc-text">延时绑定</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -322,7 +352,7 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/" title="上一篇: 第06章 可执行文件的装载与进程">
+            <a href="/2018/09/07/程序员的自我修养/第04章 静态链接/" title="上一篇: 第04章 静态链接">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -330,13 +360,13 @@
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2018/09/07/程序员的自我修养/第03章 目标文件与elf/" title="下一篇: 第03章 目标文件与ELF">
+            <a href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/" title="下一篇: 第06章 可执行文件的装载与进程">
                 <i class="fa fa-angle-right"></i>
             </a>
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第04章 静态链接/">第04章 静态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/">第06章 可执行文件的装载与进程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第07章-动态链接/">第07章 动态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第03章 目标文件与elf/">第03章 目标文件与ELF</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第02章 编译和链接/">第02章 编译和链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/28/hello-world/">yelee 使用手册</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/09/09/程序员的自我修养/第08章 Linux共享库的组织/">第08章 Linux共享库的组织</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第04章 静态链接/">第04章 静态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第07章-动态链接/">第07章 动态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/">第06章 可执行文件的装载与进程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第03章 目标文件与elf/">第03章 目标文件与ELF</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第02章 编译和链接/">第02章 编译和链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/28/hello-world/">yelee 使用手册</a></li></ul>
 
  -->
 

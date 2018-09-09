@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/150804996.png">
 <meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/152941013.png">
 <meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/160157693.png">
-<meta property="og:updated_time" content="2018-09-08T14:14:01.000Z">
+<meta property="og:updated_time" content="2018-09-09T12:38:16.256Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第03章 目标文件与ELF">
 <meta name="twitter:description" content="程序员的自我修养——链接、装载与库：第03章 目标文件ELF。 主要对目标文件与ELF格式文件内容和格式有一个了解。">
@@ -380,6 +380,7 @@
 <p>使用<code>strip</code>命令。</p>
 <p><img src="http://p8jp6dz6t.bkt.clouddn.com/blog/20180908/160157693.png" alt="strip"></p>
 <p>可以看到体积减少了将近一半，同事也没有符号表了。当然因为程序小，符号表占比相对较大。印象中，使用了标准库的时候，使用该命令也能显著减少文件体积。</p>
+<p>同时可以使用gcc参数<code>-Wl,-s</code>和<code>Wl,-S</code>传递给<code>ld</code>。<code>-s</code>清除所有符号，<code>-S</code>只清除调试符号。</p>
 <h2 id="符号修饰"><a href="#符号修饰" class="headerlink" title="符号修饰"></a>符号修饰</h2><p>函数签名：包含一个函数的函数名、参数类型、所在的类、命名空间、权限等信息。</p>
 <p>函数签名主要用于识别不同的函数，编译器在处理符号的时候，使用名称修饰的方法，使每个函数签名对应一个修饰后的名称。</p>
 <h3 id="extern-“C”"><a href="#extern-“C”" class="headerlink" title="extern “C”"></a>extern “C”</h3><p>C++将在<code>extern &quot;C&quot;</code>的大括号内部的代码当做C语言代码处理，此时C++的修饰方式就不会起作用，而是采用c的修饰方式。这样在连接的时候以c修饰方式修饰得到的符号名去链接。</p>
@@ -396,8 +397,8 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2018/09/07/程序员的自我修养/第07章-动态链接/">
-                    第07章 动态链接
+                <a href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/">
+                    第06章 可执行文件的装载与进程
                 </a>
             </div>
         
@@ -447,7 +448,7 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2018/09/07/程序员的自我修养/第07章-动态链接/" title="上一篇: 第07章 动态链接">
+            <a href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/" title="上一篇: 第06章 可执行文件的装载与进程">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -461,7 +462,7 @@
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第04章 静态链接/">第04章 静态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/">第06章 可执行文件的装载与进程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第07章-动态链接/">第07章 动态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第03章 目标文件与elf/">第03章 目标文件与ELF</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第02章 编译和链接/">第02章 编译和链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/28/hello-world/">yelee 使用手册</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/09/09/程序员的自我修养/第08章 Linux共享库的组织/">第08章 Linux共享库的组织</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第04章 静态链接/">第04章 静态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第07章-动态链接/">第07章 动态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/">第06章 可执行文件的装载与进程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第03章 目标文件与elf/">第03章 目标文件与ELF</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第02章 编译和链接/">第02章 编译和链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/28/hello-world/">yelee 使用手册</a></li></ul>
 
  -->
 
