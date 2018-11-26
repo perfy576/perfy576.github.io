@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="perfy576" />
+
+
+
+<meta name="description" content="Docker容器与容器云：第02.5章 Docker应用.md">
+<meta name="keywords" content="书,Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第02.5章 Docker应用.md">
+<meta property="og:url" content="http://yoursite.com/2018/10/31/Docker容器与容器云/第02.5章 Docker应用/index.html">
+<meta property="og:site_name" content="perfy576">
+<meta property="og:description" content="Docker容器与容器云：第02.5章 Docker应用.md">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/18-10-31/26198100.jpg">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/18-10-31/37257828.jpg">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/18-10-31/27982299.jpg">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/18-10-31/32866144.jpg">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/18-11-1/81576603.jpg">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/18-11-1/85784713.jpg">
+<meta property="og:image" content="http://p8jp6dz6t.bkt.clouddn.com/18-11-1/51425749.jpg">
+<meta property="og:updated_time" content="2018-11-01T10:00:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第02.5章 Docker应用.md">
+<meta name="twitter:description" content="Docker容器与容器云：第02.5章 Docker应用.md">
+<meta name="twitter:image" content="http://p8jp6dz6t.bkt.clouddn.com/18-10-31/26198100.jpg">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="perfy576" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>第02.5章 Docker应用.md | perfy576</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: ,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?b3eb7b0e33b83afa392e067dc9227436";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+             <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">perfy576</a></h1>
+        </hgroup>
+
+        
+
+        <!-- 
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+         -->
+
+
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">perfy576</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">perfy576</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Docker容器与容器云/第02.5章 Docker应用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/10/31/Docker容器与容器云/第02.5章 Docker应用/" class="article-date">
+      <time datetime="2018-10-31T15:05:00.000Z" itemprop="datePublished">2018-10-31</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      第02.5章 Docker应用.md
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Docker容器与容器云/">Docker容器与容器云</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/书/">书</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
+<p>Docker容器与容器云：第02.5章 Docker应用.md</p>
+<a id="more"></a> 
+</blockquote>
+<h1 id="第02-5章-Docker应用"><a href="#第02-5章-Docker应用" class="headerlink" title="第02.5章 Docker应用"></a>第02.5章 Docker应用</h1><p>本章使用Dokcer搭建一个web服务器，包括：</p>
+<ul>
+<li>使用redis作为db，并且设置主从。</li>
+<li>使用Django作为服务器</li>
+<li>使用HAProxy作为负载均衡</li>
+</ul>
+<p>主机要求安装：</p>
+<ul>
+<li>redis：主要是拿到配置文件</li>
+</ul>
+<p>##　Docker部分<br>首先，使用：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install docker.io</span><br></pre></td></tr></table></figure></p>
+<p>安装docker。<br>注意：docker几乎所有命令都是需要管理员权限的。因此，几乎都是使用<code>sudo docker</code><br>然后开始安装所有需要的镜像：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull ubuntu</span><br><span class="line">sudo docker pull django</span><br><span class="line">sudo docker pull redis</span><br><span class="line">sudo docker pull haproxy</span><br></pre></td></tr></table></figure></p>
+<p>安装完以后，就就可以查看一下，系统中所有安装的镜像了：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull images</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/18-10-31/26198100.jpg" alt=""></p>
+<h2 id="创建节点"><a href="#创建节点" class="headerlink" title="创建节点"></a>创建节点</h2><p>本章的这个服务器需要节点之间相互访问，这样在启动一个docker的时候就需要使用<code>--link name：alias</code>选项。其中<code>name</code>是创建的docker的名字，而<code>alias</code>是该docker在本docker中的别名。<br>例如我们创建一个docker：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -it --name os ubuntu /bin/bash</span><br></pre></td></tr></table></figure></p>
+<p>其中，<code>run</code>是子命令，后面的都是它的选项。<code>-i</code>表示使用交互模式，始终保持输入输出流的开放。如果只制定这个，那么就是类似与<code>cat</code>形式的输入和输出，当然输出是对应输入处理的结果。<code>-t</code>选项是分配一个伪终端。所以一般<code>-it</code>是配套出现的。<code>--name os</code>就是，给这个docker起了个名，叫<code>os</code>。<code>ubuntu</code>是第一个没有选项，只有值的，表示启动的对应的镜像。<code>/bin/bash</code>是第二个没有选项的值，镜像要执行的命令。<br>例如我们在创建一个docker：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -it --name redisMaster --link os:ubuntuOs redis /bin/bash</span><br></pre></td></tr></table></figure>
+<p>这个<code>--link</code>的意思就是，这个docker可以和<code>os</code>这个docker通信，并且<code>os</code>这个docker在<code>redisMaster</code>这个docker中别名是<code>ubuntuOs</code>。这个别名配置在<code>/etc/hosts</code>里面。</p>
+<p>因此，对于我们整个服务器，要创建的docker就是：（<strong>注意，只要使用了<code>-it</code>选项，就需要重新创建一个终端，因此下面需要创建6个终端，分别执行下面的命令</strong>）<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 创建主 redis 名字是 redisMaster</span><br><span class="line">sudo docker run -it --name redisMaster redis /bin/bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 创建两个从 redis ，名字分别是 redisSlave1、redisSlave。</span><br><span class="line"><span class="meta">#</span> 最主要的是，这两个 docker 要和 redisMaster 创建链接，能够通信</span><br><span class="line"><span class="meta">#</span> 所以使用 --link 选项</span><br><span class="line">sudo docker run -it --name redisSlave1 --link redisMaster:master redis /bin/bash</span><br><span class="line">sudo docker run -it --name redisSlave2 --link redisMaster:master redis /bin/bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 创建2个 django 服务器</span><br><span class="line"><span class="meta">#</span> 并且能够和 redisMaster 通信，作为db使用。</span><br><span class="line"><span class="meta">#</span> 其中 -v 选项是挂载或者说是共享主机文件夹的功能。</span><br><span class="line">sudo docker run -it --name app1 --link redisMaster:db -v ~/code/docker/demo1/app1:/usr/src/app django /bin/bash</span><br><span class="line">sudo docker run -it --name app2 --link redisMaster:db -v ~/code/docker/demo1/app1:/usr/src/app django /bin/bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 创建负载均衡 HAProxy</span><br><span class="line"><span class="meta">#</span> 它要求能和 app1 、 app2 通信</span><br><span class="line">sudo docker run -it --name haproxy --link app1:app1 --link app2:app2 -p 6301:6301 -v ~/code/docker/demo1/haproxy:/tmp haproxy /bin/bash</span><br></pre></td></tr></table></figure></p>
+<p>所有的docker执行的命令都是<code>/bin/bash</code>。<br>其中<code>-v sharedDir：aliasDir</code>表示，讲主机的<code>sharedDir</code>挂载在docker的<code>aliasDir</code>下面。这样做的主要原因是，docker里面要求做到精简，很多的命令都没有，包括vim命令。因此通过和主机共享文件夹的方式，能够方便的编辑文件。而redis镜像中就已经集成了挂载的命令，它把主机的一个文件夹挂载在<code>/data</code>下面。而主机的文件夹，是创建在<code>/var/lib/docker/volumes/随机/_data</code>目录下。查看那个随机字符串的方式是：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker inspect dockerName | grep Source</span><br></pre></td></tr></table></figure></p>
+<p>创建完6个docker以后，使用<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker ps -a</span><br></pre></td></tr></table></figure></p>
+<p>查看所有docker：<br><img src="http://p8jp6dz6t.bkt.clouddn.com/18-10-31/37257828.jpg" alt=""></p>
+<h2 id="redis-配置"><a href="#redis-配置" class="headerlink" title="redis 配置"></a>redis 配置</h2><p>首先，启动主 redis ：<strong>新建一个终端</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker inspect redisMaster | grep Source</span><br></pre></td></tr></table></figure></p>
+<p>获得，挂载在 redisMaster 中的主机的文件夹的位置：<br><img src="http://p8jp6dz6t.bkt.clouddn.com/18-10-31/27982299.jpg" alt=""><br>然后进入到这个文件夹中。这里有个问题是<code>cd</code>命令是一个<code>alias</code>不能够直接使用<code>sudo</code>，因此先使用<code>sudo -s</code>切换到root用户。<code>sudo -s</code>和<code>sudo su</code>的区别是，前者使用的是当前用户的环境，后者使用的是目标用户的欢迎。<br><code>sudo -s</code>以后，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`cd /var/lib/docker/volumes/d0c972edcbc67022501bc1f2702a8776f3412f80bc0e2012b463726e0b78514e/_data`</span><br></pre></td></tr></table></figure>
+<p>里面是空的，然后从主机的的redis中拷贝配置文件，<code>apt-get</code>安装的是在<code>/etc/redis</code>文件夹中的<code>redis.conf</code>。将其拷贝到<code>/var/lib/docker/volumes/d0c972edcbc67022501bc1f2702a8776f3412f80bc0e2012b463726e0b78514e/_data</code>中。然后开始编辑。主要更改的是：</p>
+<ul>
+<li>注释掉<code>bind</code>的地址的哪一行，因此如果<code>bind 127.0.0.1</code>，那么因为linux策略的问题，会禁止外部链接访问redis，这样就没有办法进行主从复制了。</li>
+<li>将<code>logfile</code>和<code>dir</code>的目录，因为docker中可能不存在默认的这些目录，在启动的时候会报错。<br>然后启动 redisMaster ，在 redisMaster docker的那个终端。进入<code>/usr/local/bin</code>目录，将<code>/data/redis.conf</code>(这个就是主机共享的文件夹中的)拷贝到<code>/usr/local/bin</code>。然后启动：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/bin/redis-server /usr/local/bin/redis.conf</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>如果修改了redis.conf，要重新启动redis-server，需要使用<code>redis-cli SHUTDOWN</code>先停止，再启动。</p>
+<p>然后配置两个从节点。修改的配置文件部分主要有：</p>
+<ul>
+<li>注释掉<code>bind</code>的地址的哪一行，因此如果<code>bind 127.0.0.1</code>，那么因为linux策略的问题，会禁止外部链接访问redis，这样就没有办法进行主从复制了。但是从节点是去去访问别的节点，因此不注释也可以</li>
+<li>将<code>logfile</code>和<code>dir</code>的目录，因为docker中可能不存在默认的这些目录，在启动的时候会报错。</li>
+<li>加上<code>slaveof master 6379</code>,表示本节点是一个从节点。</li>
+</ul>
+<p>这里<code>slaveof master 6379</code>中的<code>master</code>其实就是一个域名了，但是他被配置在docker的<code>/etc/hosts</code>中，查看<code>redisSlave1</code>的：<br>  <img src="http://p8jp6dz6t.bkt.clouddn.com/18-10-31/32866144.jpg" alt=""><br>其中<code>d83661770273</code>是<code>redisSlave1</code>的id，而<code>master</code>被映射成为<code>172.17.0.2</code>这就是<code>redisMaster</code>的ip。因此在连接的时候，进行DNS阶段，会先根据该文件讲<code>master</code>解析成为对应的ip（<code>master</code>是因为我们设置的别名）。<br>设置好从节点的配置文件以后，像设置主节点一样，启动两个从节点。</p>
+<p>测试主从模式，在三个 redis 的docker 中执行 <code>redis-cli</code>进入 redis 客户端：<br><img src="http://p8jp6dz6t.bkt.clouddn.com/18-11-1/81576603.jpg" alt=""><br>红色数字表示命令的顺序。左1是 redisMaster，右面两个是从节点。（使用 info 命令查看）</p>
+<h2 id="docker重启"><a href="#docker重启" class="headerlink" title="docker重启"></a>docker重启</h2><p>docker关闭以后，可以直接通过：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 启动指定名字的docker</span><br><span class="line">sudo docker start name</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 如果是 -it 启动的dokcer 可以attach上</span><br><span class="line">sudo docker attach name</span><br></pre></td></tr></table></figure>
+<p>在不小心关闭了<code>redisMaster</code>的docker以后，可以通过：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker start redisMaster</span><br><span class="line">sudo docker attach redisMaster</span><br></pre></td></tr></table></figure>
+<p>重新打开后，docker里面的应用都是关闭的，需要手动启动。</p>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/18-11-1/85784713.jpg" alt=""></p>
+<h2 id="django服务器"><a href="#django服务器" class="headerlink" title="django服务器"></a>django服务器</h2><p>进入docker的<code>~/code/src/app</code>目录，使用 django-admin 工具构建项目。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@04f0aafbe638:/usr/src/app# django-admin startproject redisweb</span><br><span class="line">root@04f0aafbe638:/usr/src/app# ls</span><br><span class="line">redisweb</span><br><span class="line">root@04f0aafbe638:/usr/src/app# cd redisweb/</span><br><span class="line">root@04f0aafbe638:/usr/src/app/redisweb# ls</span><br><span class="line">manage.py  redisweb</span><br><span class="line">root@04f0aafbe638:/usr/src/app/redisweb# python manage.py startapp helloworld</span><br><span class="line">root@04f0aafbe638:/usr/src/app/redisweb# ls</span><br><span class="line">helloworld  manage.py  redisweb</span><br><span class="line">root@04f0aafbe638:/usr/src/app/redisweb#</span><br></pre></td></tr></table></figure>
+<p>然后使用主机开始编辑：</p>
+<p>主要是：<code>～/code/docker/demo1/app2/dockerweb/views.py</code>内容修改（需要root权限）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> render</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create your views here.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="keyword">import</span> redis </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(request)</span>:</span></span><br><span class="line">    str=redis.__file__</span><br><span class="line">    str+=<span class="string">"&lt;br&gt;"</span></span><br><span class="line">    r=redis.Redis(host=<span class="string">'db'</span>,port=<span class="number">6379</span>,db=<span class="number">0</span>)</span><br><span class="line">    info=r.info()</span><br><span class="line">    str+=(<span class="string">"Set Hi &lt;br&gt;"</span>)</span><br><span class="line">    r.set(<span class="string">'Hi'</span>,<span class="string">'HelloWorld-app1'</span>)</span><br><span class="line">    str+=(<span class="string">"get Hi: %s &lt;br&gt;"</span> % r.get(<span class="string">'Hi'</span>))</span><br><span class="line">    str+=(<span class="string">"Redis Info: &lt;br&gt;"</span>)</span><br><span class="line">    str+=(<span class="string">"Key: Info Value"</span>)</span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> info:</span><br><span class="line">        str+=(<span class="string">"%s: %s &lt;br&gt;"</span> % (key,info[key]))</span><br><span class="line">    <span class="keyword">return</span> HttpResponse(str)</span><br></pre></td></tr></table></figure>
+<p>然后修改<code>～/code/docker/demo1/app1/dockerweb/redisweb/redisweb/settings.py</code>，表示启动的服务，是按照文件夹来的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = (</span><br><span class="line">    <span class="string">'django.contrib.admin'</span>,</span><br><span class="line">    <span class="string">'django.contrib.auth'</span>,</span><br><span class="line">    <span class="string">'django.contrib.contenttypes'</span>,</span><br><span class="line">    <span class="string">'django.contrib.sessions'</span>,</span><br><span class="line">    <span class="string">'django.contrib.messages'</span>,</span><br><span class="line">    <span class="string">'django.contrib.staticfiles'</span>,</span><br><span class="line">    <span class="string">'helloworld'</span>, <span class="comment"># 加上这句</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>还有路由<code>～/code/docker/demo1/app1/dockerweb/redisweb/redisweb/urls.py</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.conf.urls <span class="keyword">import</span> url</span><br><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> helloworld.views <span class="keyword">import</span> hello</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    url(<span class="string">r'^admin/'</span>, admin.site.urls),</span><br><span class="line">    url(<span class="string">r'^helloworld$'</span>,hello) <span class="comment"># 加上</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>然后重新进入docker：</p>
+<p>主要执行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">python manage.py makemigrations</span><br><span class="line">python manage.py migrate</span><br><span class="line"><span class="comment"># app 使用8001，app2使用8002</span></span><br><span class="line">python manage.py runserver <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">8001</span></span><br></pre></td></tr></table></figure>
+<p>（<strong>注意，书上还有一步<code>python manage.py syncdb</code>，现在已经合到<code>migrate</code>中了</strong>）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">root@<span class="number">04</span>f0aafbe638:/usr/src/app/redisweb<span class="comment"># python manage.py makemigrations</span></span><br><span class="line">No changes detected</span><br><span class="line">root@<span class="number">04</span>f0aafbe638:/usr/src/app/redisweb<span class="comment"># python manage.py migrate</span></span><br><span class="line">Operations to perform:</span><br><span class="line">  Apply all migrations: admin, auth, contenttypes, sessions</span><br><span class="line">Running migrations:</span><br><span class="line">  Applying contenttypes<span class="number">.0001</span>_initial... OK</span><br><span class="line">  Applying auth<span class="number">.0001</span>_initial... OK</span><br><span class="line">  Applying admin<span class="number">.0001</span>_initial... OK</span><br><span class="line">  Applying admin<span class="number">.0002</span>_logentry_remove_auto_add... OK</span><br><span class="line">  Applying contenttypes<span class="number">.0002</span>_remove_content_type_name... OK</span><br><span class="line">  Applying auth<span class="number">.0002</span>_alter_permission_name_max_length... OK</span><br><span class="line">  Applying auth<span class="number">.0003</span>_alter_user_email_max_length... OK</span><br><span class="line">  Applying auth<span class="number">.0004</span>_alter_user_username_opts... OK</span><br><span class="line">  Applying auth<span class="number">.0005</span>_alter_user_last_login_null... OK</span><br><span class="line">  Applying auth<span class="number">.0006</span>_require_contenttypes_0002... OK</span><br><span class="line">  Applying auth<span class="number">.0007</span>_alter_validators_add_error_messages... OK</span><br><span class="line">  Applying auth<span class="number">.0008</span>_alter_user_username_max_length... OK</span><br><span class="line">  Applying sessions<span class="number">.0001</span>_initial... OK</span><br><span class="line">root@<span class="number">04</span>f0aafbe638:/usr/src/app/redisweb<span class="comment"># python manage.py runserver 0.0.0.0:8001</span></span><br><span class="line">Performing system checks...</span><br><span class="line"></span><br><span class="line">System check identified no issues (<span class="number">0</span> silenced).</span><br><span class="line">November <span class="number">01</span>, <span class="number">2018</span> - <span class="number">08</span>:<span class="number">31</span>:<span class="number">32</span></span><br><span class="line">Django version <span class="number">1.10</span><span class="number">.4</span>, using settings <span class="string">'redisweb.settings'</span></span><br><span class="line">Starting development server at http://<span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">8001</span>/</span><br><span class="line">Quit the server <span class="keyword">with</span> CONTROL-C.</span><br></pre></td></tr></table></figure>
+<p>两个服务器都要启动！！</p>
+<h2 id="HAPrxoy配置"><a href="#HAPrxoy配置" class="headerlink" title="HAPrxoy配置"></a>HAPrxoy配置</h2><p>在主机中<code>~/code/docker/demo1/haproxy/</code>中创建配置文件<code>haproxy.cfg</code>:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">global</span><br><span class="line">    log 127.0.0.1 local0</span><br><span class="line">    maxconn 4096</span><br><span class="line">    chroot /usr/local/sbin</span><br><span class="line">    daemon</span><br><span class="line">    nbproc 4</span><br><span class="line">    pidfile /usr/local/sbin/haproxy.pid </span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">    log 127.0.0.1 local3</span><br><span class="line">    mode http</span><br><span class="line">    option dontlognull</span><br><span class="line">    option redispatch</span><br><span class="line">    retries 2</span><br><span class="line">    maxconn 2000</span><br><span class="line">    balance roundrobin</span><br><span class="line">    timeout connect 5000ms</span><br><span class="line">    timeout client 500000ms</span><br><span class="line">    timeout server 500000ms </span><br><span class="line"></span><br><span class="line">listen redis_proxy </span><br><span class="line">    bind 0.0.0.0:6301 </span><br><span class="line">    bind-process 2</span><br><span class="line">    stats enable</span><br><span class="line">    stats uri /haproxy-stats </span><br><span class="line">        server app1 app1:8001 check inter 2000 rise 2 fall 5</span><br><span class="line">        server app2 app2:8002 check inter 2000 rise 2 fall 5</span><br></pre></td></tr></table></figure>
+<p>相对书上的的有更改，主要是<code>listen</code>分成两部分，ip用<code>bind</code>。另外，使用<code>bind-process 2</code>表示多核。</p>
+<p>然后，docker中启动haproxy：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp /tmp/haproxy.cfg /usr/local/sbin/</span><br><span class="line">haproxy -f haproxy.cfg</span><br></pre></td></tr></table></figure>
+<p>就可以在主机中进行访问了。</p>
+<p>因为创建docker的时候，对讲主机的6301映射为docker的6301端口。因此在主机中使用<code>127.0.0.1:6301</code>可以访问，haproxy。然后，创建的helloworld服务，路由到了helloworld。因此访问的路径是：<code>127.0.0.1:6301/hellowrold</code>:</p>
+<p><img src="http://p8jp6dz6t.bkt.clouddn.com/18-11-1/51425749.jpg" alt="">单个页面不停刷新，就会交替显示app1和app1。因为负载均衡的算法是轮训。</p>
+<p>redis中<code>dbsize</code>应该只有1，键是<code>Hi</code>，值是上次使用的app的名字。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2018/11/27/tower_of_hero/物品图鉴/">
+                    英雄之塔 IOS 版 装备图鉴
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/10/08/modern cpp/条款07 ()和{}初始化/">
+                    条款07 ()和{}初始化
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第02-5章-Docker应用"><span class="toc-number">1.</span> <span class="toc-text">第02.5章 Docker应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建节点"><span class="toc-number">1.1.</span> <span class="toc-text">创建节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis-配置"><span class="toc-number">1.2.</span> <span class="toc-text">redis 配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker重启"><span class="toc-number">1.3.</span> <span class="toc-text">docker重启</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#django服务器"><span class="toc-number">1.4.</span> <span class="toc-text">django服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HAPrxoy配置"><span class="toc-number">1.5.</span> <span class="toc-text">HAPrxoy配置</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+
+
+    
+
+
+<!-- 
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/11/27/tower_of_hero/物品图鉴/" title="上一篇: 英雄之塔 IOS 版 装备图鉴">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/10/08/modern cpp/条款07 ()和{}初始化/" title="下一篇: 条款07 ()和{}初始化">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/11/27/tower_of_hero/物品图鉴/">英雄之塔 IOS 版 装备图鉴</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/31/Docker容器与容器云/第02.5章 Docker应用/">第02.5章 Docker应用.md</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/08/modern cpp/条款07 ()和{}初始化/">条款07 ()和{}初始化</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/08/modern cpp/条款06 auto不适用的情况/">条款06 auto不适用的情况</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/07/modern cpp/条款05 优先使用auto/">条款05 优先使用auto</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/03/modern cpp/条款04 其他类型推导的方法/">条款04 其他类型推导的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/03/modern cpp/条款03 decltype类型推导/">条款03 decltype类型推导</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/30/vim使用技巧/第09章 文件间跳转/">第09章 文件间跳转</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/29/vim使用技巧/第08章 用动作命令在文档中移动/">第08章 用动作命令在文档中移动</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/29/vim使用技巧/第07章 打开及保存文件/">第07章 打开及保存文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/28/vim使用技巧/第06章 管理多个文件/">第06章 管理多个文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/26/modern cpp/条款02 auto类别推导/">条款02 auto类型推导</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/26/Docker容器与容器云/第01章 从容器到容器云/">第01章 从容器到容器云</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/26/nginx/linux 区域设置/">linux 区域设置</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/26/Docker容器与容器云/第03章 Docker核心原理/">第03章 Docker核心原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/26/Docker容器与容器云/第02章 Docker基础/">第02章 Docker基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/26/modern cpp/条款01 理解模板类别推导/">条款01 理解模板类型推导</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/10/algothrim/leetcode1-Two-Sum/">leetcode1 Two Sum</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/09/流畅的python/第01章-python数据模型/">第01章 python数据模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/09/程序员的自我修养/第08章 Linux共享库的组织/">第08章 Linux共享库的组织</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第07章-动态链接/">第07章 动态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/">第06章 可执行文件的装载与进程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第04章 静态链接/">第04章 静态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第03章 目标文件与elf/">第03章 目标文件与ELF</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第02章 编译和链接/">第02章 编译和链接</a></li></ul>
+
+ -->
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2018 perfy576
+            </div>
+            <div class="footer-right">
+                <!-- <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i> -->
+            </div>
+        </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-124181440-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+             title: "a.article-title, .article-more-link a", 
+             post: ".article-entry a[href], .copyright a[href]", 
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

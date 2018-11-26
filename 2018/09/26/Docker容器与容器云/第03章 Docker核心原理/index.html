@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="perfy576" />
+
+
+
+<meta name="description" content="Docker容器与容器云：第3章 Docker核心原理">
+<meta name="keywords" content="书,Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第03章 Docker核心原理">
+<meta property="og:url" content="http://yoursite.com/2018/09/26/Docker容器与容器云/第03章 Docker核心原理/index.html">
+<meta property="og:site_name" content="perfy576">
+<meta property="og:description" content="Docker容器与容器云：第3章 Docker核心原理">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-09T15:18:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第03章 Docker核心原理">
+<meta name="twitter:description" content="Docker容器与容器云：第3章 Docker核心原理">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="perfy576" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>第03章 Docker核心原理 | perfy576</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: ,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?b3eb7b0e33b83afa392e067dc9227436";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+             <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">perfy576</a></h1>
+        </hgroup>
+
+        
+
+        <!-- 
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+         -->
+
+
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">perfy576</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">perfy576</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Docker容器与容器云/第03章 Docker核心原理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/09/26/Docker容器与容器云/第03章 Docker核心原理/" class="article-date">
+      <time datetime="2018-09-26T04:07:00.000Z" itemprop="datePublished">2018-09-26</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      第03章 Docker核心原理
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Docker容器与容器云/">Docker容器与容器云</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/书/">书</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
+<p>Docker容器与容器云：第3章 Docker核心原理</p>
+<a id="more"></a> 
+</blockquote>
+<h1 id="Docker核心原理"><a href="#Docker核心原理" class="headerlink" title="Docker核心原理"></a>Docker核心原理</h1><h2 id="隔离"><a href="#隔离" class="headerlink" title="隔离"></a>隔离</h2><p>Docker本质上是宿主机器上的进程。Docker通过<code>namespace</code>实现资源隔离、通过<code>cgroups</code>实现资源限制、通过写时复制实现高效的文件操作。</p>
+<p>容器中需要隔离的有：</p>
+<ul>
+<li><p>主机名与域名</p>
+<p>namespace：UTS，系统调用参数：CLONE_NEWUTS</p>
+</li>
+<li><p>信号量、消息队列和共享内存</p>
+<p>namespace：IPS，系统调用参数：CLONE_NEWIPC</p>
+</li>
+<li><p>进程编号</p>
+<p>namespace：PID，系统调用参数：CLONE_NEWPID</p>
+</li>
+<li><p>网络设备、网络栈、端口</p>
+<p>namespace：Network，系统调用参数：CLONE_NEWNET</p>
+</li>
+<li><p>挂载点</p>
+<p>namespace：Mount，系统调用参数：CLONE_NEWNS</p>
+</li>
+<li><p>用户和用户组</p>
+<p>namespace：User，系统调用参数：CLONE_NEWUSER</p>
+</li>
+</ul>
+<p>也就是说资源隔离包括：文件系统隔离（chroot命令改变根目录），独立的ip端口路由，进程间通信，用户和用户组，进程号。</p>
+<h2 id="资源限制"><a href="#资源限制" class="headerlink" title="资源限制"></a>资源限制</h2><p>groups是Linux内核提供的一种机制，这种机制可以根据需求吧一些列系统任务及子任务整合（或是分隔）到按资源划分等级的不同组内，从而为系统资源管理提供一个统一的框架。</p>
+<p>cgroups的可以限制、记录任务组所使用的物理资源，为容器实现虚拟化提供了保证，是构建Docker等一系列虚拟化管理工具的基石。cgroups的API以一个伪文件系统的方式实现，用户太的城西可以通过文件操作实现cgroups的组织管理。cfroups的细度可以到线程的级别。子任务创建时与父任务处于同一个cgroups。</p>
+<p>cgroups提供了四大功能：资源限制，优先级分配，资源统计，任务控制。</p>
+<h3 id="子系统"><a href="#子系统" class="headerlink" title="子系统"></a>子系统</h3><p>子系统是cgroups的资源控制系统，每个子系统独立的控制一种资源，目前Docker采用了如下9种子系统：</p>
+<ul>
+<li>blkio：块设备设定输出/输出限制</li>
+<li>cpu：调度程序控制任务对cpu的使用</li>
+<li>cpuacct：自动生成cgroup中任务对cpu资源的使用情况报告</li>
+<li>cpuset：可以为cgroup中的任务分配独立的cpu和内存</li>
+<li>devices：开关cgroup中任务对设备的访问</li>
+<li>freezer：挂起或恢复cgroup中的任务</li>
+<li>memory：设定cgroup中任务对内存使用量的限定，并自动生成这些任务对内存资源使用情况的报告</li>
+<li>perf_event：使cgroup中的任务可以进行统一的性能测试</li>
+</ul>
+<h3 id="cgroups原理"><a href="#cgroups原理" class="headerlink" title="cgroups原理"></a>cgroups原理</h3>
+      
+    </div>
+    
+  </div>
+  
+    
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2018/09/26/nginx/linux 区域设置/">
+                    linux 区域设置
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/09/26/Docker容器与容器云/第02章 Docker基础/">
+                    第02章 Docker基础
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Docker核心原理"><span class="toc-number">1.</span> <span class="toc-text">Docker核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#隔离"><span class="toc-number">1.1.</span> <span class="toc-text">隔离</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#资源限制"><span class="toc-number">1.2.</span> <span class="toc-text">资源限制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#子系统"><span class="toc-number">1.2.1.</span> <span class="toc-text">子系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cgroups原理"><span class="toc-number">1.2.2.</span> <span class="toc-text">cgroups原理</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+
+
+    
+
+
+<!-- 
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/09/26/nginx/linux 区域设置/" title="上一篇: linux 区域设置">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/09/26/Docker容器与容器云/第02章 Docker基础/" title="下一篇: 第02章 Docker基础">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/11/27/tower_of_hero/物品图鉴/">英雄之塔 IOS 版 装备图鉴</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/31/Docker容器与容器云/第02.5章 Docker应用/">第02.5章 Docker应用.md</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/08/modern cpp/条款07 ()和{}初始化/">条款07 ()和{}初始化</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/08/modern cpp/条款06 auto不适用的情况/">条款06 auto不适用的情况</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/07/modern cpp/条款05 优先使用auto/">条款05 优先使用auto</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/03/modern cpp/条款04 其他类型推导的方法/">条款04 其他类型推导的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/03/modern cpp/条款03 decltype类型推导/">条款03 decltype类型推导</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/30/vim使用技巧/第09章 文件间跳转/">第09章 文件间跳转</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/29/vim使用技巧/第08章 用动作命令在文档中移动/">第08章 用动作命令在文档中移动</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/29/vim使用技巧/第07章 打开及保存文件/">第07章 打开及保存文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/28/vim使用技巧/第06章 管理多个文件/">第06章 管理多个文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/26/modern cpp/条款02 auto类别推导/">条款02 auto类型推导</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/26/Docker容器与容器云/第01章 从容器到容器云/">第01章 从容器到容器云</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/26/nginx/linux 区域设置/">linux 区域设置</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/26/Docker容器与容器云/第03章 Docker核心原理/">第03章 Docker核心原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/26/Docker容器与容器云/第02章 Docker基础/">第02章 Docker基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/26/modern cpp/条款01 理解模板类别推导/">条款01 理解模板类型推导</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/10/algothrim/leetcode1-Two-Sum/">leetcode1 Two Sum</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/09/流畅的python/第01章-python数据模型/">第01章 python数据模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/09/程序员的自我修养/第08章 Linux共享库的组织/">第08章 Linux共享库的组织</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第07章-动态链接/">第07章 动态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第06章 可执行文件的装载与进程/">第06章 可执行文件的装载与进程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第04章 静态链接/">第04章 静态链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第03章 目标文件与elf/">第03章 目标文件与ELF</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/07/程序员的自我修养/第02章 编译和链接/">第02章 编译和链接</a></li></ul>
+
+ -->
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2018 perfy576
+            </div>
+            <div class="footer-right">
+                <!-- <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i> -->
+            </div>
+        </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-124181440-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+             title: "a.article-title, .article-more-link a", 
+             post: ".article-entry a[href], .copyright a[href]", 
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
